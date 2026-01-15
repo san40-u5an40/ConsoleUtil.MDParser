@@ -1,50 +1,64 @@
 # ContentsMdGenerator
-## Назначение:
+## Назначение
 Эта программа позволяет в одну небольшую команду составлять оглавление для указанных *.md файлов. 
 
-## Примеры использования:
+## Примеры использования
 Для примера возьмём папку с README.md:
 ```CMD
-Z:\4_programming\csharp\projects\ExtraLib\ExtraLib>dir
+K:\programming\csharp\projects\utils\ContentsMdGenerator>ls
+ Directory of K:\programming\csharp\projects\utils\ContentsMdGenerator
 
- Содержимое папки Z:\4_programming\csharp\projects\ExtraLib\ExtraLib
-
-13.10.2025  23:08    <DIR>          .
-13.10.2025  23:08    <DIR>          ..
-13.10.2025  13:55    <DIR>          bin
-12.10.2025  22:30             2 322 Bytes.cs
-13.10.2025  13:10             1 862 Comparator.cs
-12.10.2025  22:28             1 482 ConsoleExtension.cs
-12.10.2025  22:28             5 076 Display.cs
-12.10.2025  22:27               276 ExtraLib.csproj
-13.10.2025  22:59    <DIR>          obj
-13.10.2025  14:06            21 137 README.md
-12.10.2025  22:28            18 563 Reflection.cs
-12.10.2025  22:28             3 786 Regexes.cs
-12.10.2025  22:28             2 901 StringCrypt.cs
-12.10.2025  22:28               961 TimerHelper.cs
-              10 файлов         58 366 байт
+07.12.2025  21:26    <DIR>          .
+07.12.2025  21:26    <DIR>          ..
+13.10.2025  23:24             7 788 .gitignore
+02.11.2025  21:40             1 111 LICENSE
+07.12.2025  12:36    <DIR>          src
+15.01.2026  18:19             2 125 README.md
+               3 File(s)         11 024 bytes
+               3 Dir(s)  84 977 319 936 bytes free
 ```
 
-Вызовем программу, передав в неё название файла, оглавление которого необходимо составить, и, при необходимости, задав лимит для уровня заголовков, которые попадут в это оглавление.
+Вызовем программу, передав в неё название файла, оглавление которого необходимо составить.
 ```CMD
-::                                  Вызов программы ↓     ↓ Файл  ↓ Лимит для уровня заголовка           
-Z:\4_programming\csharp\projects\ExtraLib\ExtraLib>cont README.md 2
-Файл "contents_README.md" успешно создан!
-::            ↑ Здесь находится составленный заголовок
+::                                         Вызов программы ↓     ↓ Файл     
+K:\programming\csharp\projects\utils\ContentsMdGenerator>cont README.md
+Файл с оглавлением успешно создан!
+::            ↑ Уведомление об успешном создании файла
 ```
 
 Содержимое созданного файла:
 ```CMD
-Z:\4_programming\csharp\projects\ExtraLib\ExtraLib>type contents_README.md
-    - [Regexes]()
-    - [Bytes]()
-    - [Comparator]()
-    - [TimerHelper]()
-    - [ConsoleExtension]()
-    - [Display]()
-    - [StringCrypt]()
-    - [Reflection]()
-
-Z:\4_programming\csharp\projects\ExtraLib\ExtraLib>
+K:\programming\csharp\projects\utils\ContentsMdGenerator>type contents_README.md
+- [ContentsMdGenerator]()
+    - [Назначение]()
+    - [Примеры использования]()
+    - [Лимит для уровня заголовка]()
+    - [Авто-генерация якорей оглавления]()
 ```
+
+## Лимит для уровня заголовка
+Лимит можно задать с помощью флага "/l":
+```CMD
+K:\programming\csharp\projects\utils\ContentsMdGenerator>cont README.md /l 2
+:: Заголовки более высокого уровня не будут включены в файл с оглавлением
+```
+
+## Авто-генерация якорей оглавления
+Якоря можно включить с помощью флага "/a" (от слова anchor):
+```CMD
+K:\programming\csharp\projects\utils\ContentsMdGenerator>cont README.md /a
+Файл с оглавлением успешно создан!
+
+K:\programming\csharp\projects\utils\ContentsMdGenerator>type contents_README.md
+- [ContentsMdGenerator](#contentsmdgenerator)
+    - [Назначение](#назначение)
+    - [Примеры использования](#примеры-использования)
+    - [Лимит для уровня заголовка](#лимит-для-уровня-заголовка)
+    - [Авто-генерация якорей оглавления](#авто-генерация-якорей-оглавления)
+```
+
+Так как на разных платформах отличаются правила обработки специальных символов во внутренних ссылках, программа использует минимальный уровень обработки:
+- Приводит всё к нижнему регистру.
+- Заменяет пробелы на '-'.
+
+При наличии специальных или пунктуационных символов и специфических требований платформы может понадобится ручная корректировка ссылок, указанных в оглавлении.
