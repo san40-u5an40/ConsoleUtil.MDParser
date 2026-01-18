@@ -4,23 +4,23 @@
     // 
     // В случае существования файла с оглавлением у пользователя спрашивается необходимость его перезаписи
     // После чего открывается стрим, по которому и записывается оглавление
-    private static WriteContentsResult WriteContents(string contents, FileInfo outputFileInfo)
+    private static OutputResult WriteContents(WriterInfo writerInfo)
     {
-        if (!AskContinueIfOutputFileContains(outputFileInfo))
-            return WriteContentsResult.CreateFailure("Операция отменена");
+        if (!AskContinueIfOutputFileContains(writerInfo.FileInfo))
+            return OutputResult.CreateFailure("Операция отменена");
 
         try
         {
-            using var streamFile = outputFileInfo.CreateText();
+            using var streamFile = writerInfo.FileInfo.CreateText();
 
-            streamFile.Write(contents);
+            streamFile.Write(writerInfo.Content);
             streamFile.Flush();
 
-            return WriteContentsResult.CreateSuccess(new object());
+            return OutputResult.CreateSuccess(new object());
         }
         catch (Exception ex)
         {
-            return WriteContentsResult.CreateFailure(ex.Message);
+            return OutputResult.CreateFailure(ex.Message);
         }
 
         // В случае существования файла у пользователя спрашивается необходимость его перезаписи

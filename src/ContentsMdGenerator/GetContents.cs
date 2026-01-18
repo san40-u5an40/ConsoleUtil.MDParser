@@ -6,9 +6,9 @@
     // Открывается стрим из которого и получается текст, который записывается в эту переменную
     // Если текст пустой, возвращается соответствующая ошибка
     // После этого в переменную StringBuilder вносятся все заголовки и возвращается соответствующий результат
-    private static GetContentsResult GetContents(string path, int limit, bool isContainsAnchor)
+    private static ContentResult GetContents(ArgumentsInfo argumentsInfo)
     {
-        var fileInfo = new FileInfo(path);
+        var fileInfo = new FileInfo(argumentsInfo.Path);
         string fileText;
 
         try
@@ -18,16 +18,16 @@
         }
         catch (Exception ex)
         {
-            return GetContentsResult.CreateFailure(ex.Message);
+            return ContentResult.CreateFailure(ex.Message);
         }
 
         if (string.IsNullOrEmpty(fileText))
-            return GetContentsResult.CreateFailure("Файл \"" + fileInfo.Name + "\" не содержит текста!");
+            return ContentResult.CreateFailure("Файл \"" + fileInfo.Name + "\" не содержит текста!");
 
         var contents = new StringBuilder();
-        AppendContents(contents, fileText, limit, isContainsAnchor);
+        AppendContents(contents, fileText, argumentsInfo.Limit, argumentsInfo.IsContainsAnchor);
 
-        return GetContentsResult.CreateSuccess(contents);
+        return ContentResult.CreateSuccess(new ContentInfo(argumentsInfo, contents));
 
         // Локальная функция добавления заголовков в переменную StringBuilder
         // 

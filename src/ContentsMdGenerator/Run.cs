@@ -1,10 +1,13 @@
 ﻿// Результат работы основных методов программы
-global using HandleArgumentsResult = san40_u5an40.ExtraLib.Broad.Result<SuccessHandleArguments, string>;
-global using GetContentsResult = san40_u5an40.ExtraLib.Broad.Result<System.Text.StringBuilder, string>;
-global using WriteContentsResult = san40_u5an40.ExtraLib.Broad.Result<object, string>;
+global using ArgumentsResult = san40_u5an40.ExtraLib.Broad.Patterns.Result<ArgumentsInfo, string>;
+global using ContentResult = san40_u5an40.ExtraLib.Broad.Patterns.Result<ContentInfo, string>;
+global using OutputResult = san40_u5an40.ExtraLib.Broad.Patterns.Result<object, string>;
+global using WriterResult = san40_u5an40.ExtraLib.Broad.Patterns.Result<WriterInfo, string>;
 
 // Данные, указанные пользователем в командной строке
-internal record SuccessHandleArguments(string Path, int Limit, bool IsContainsAnchor);
+internal record ArgumentsInfo(string Path, int Limit, bool IsContainsAnchor);
+internal record ContentInfo(ArgumentsInfo ArgumentsInfo, StringBuilder Content);
+internal record WriterInfo(StringBuilder Content, FileInfo FileInfo);
 
 internal static partial class ContentsMdGenerator
 {
@@ -17,25 +20,16 @@ internal static partial class ContentsMdGenerator
     // Если что-то не гуд, то выводится информация о возникшей ошибке
     internal static void Run(string[] args)
     {
-        var handleArgumentsResult = HandleArguments(args);
-        if (!handleArgumentsResult.IsValid)
-        {
-            Console.WriteLine(handleArgumentsResult.Error);
-            return;
-        }
+        var chainResult = new Chain<string[], object, string>(args)
+            .AddMethod<string[], ArgumentsInfo>(HandleArguments)
+            .AddMethod<ArgumentsInfo, ContentInfo>(GetContents)
+            .AddMethod<ContentInfo, WriterInfo>(GetOutputFileInfo)
+            .AddMethod<WriterInfo, object>(WriteContents)
+            .Execute();
 
-        var getContentsResult = GetContents(handleArgumentsResult.Value.Path, handleArgumentsResult.Value.Limit, handleArgumentsResult.Value.IsContainsAnchor);
-        if (!getContentsResult.IsValid)
+        if (!chainResult.IsValid)
         {
-            Console.WriteLine(getContentsResult.Error);
-            return;
-        }
-
-        var outputFileInfo = GetOutputFileInfo(handleArgumentsResult.Value.Path);
-        var writeContentsResult = WriteContents(getContentsResult.Value.ToString(), outputFileInfo);
-        if (!writeContentsResult.IsValid)
-        {
-            Console.WriteLine(writeContentsResult.Error);
+            Console.WriteLine(chainResult.Error);
             return;
         }
 

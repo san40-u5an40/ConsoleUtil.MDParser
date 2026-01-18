@@ -14,20 +14,20 @@
     // Если пользователь не указал аргументы, возвращается справочная информация
     // Если просто указаны невалидные аргументы, то возвращается соответствующая ошибка
     // Потом все полученные данные возвращаются из метода
-    private static HandleArgumentsResult HandleArguments(string[] args)
+    private static ArgumentsResult HandleArguments(string[] args)
     {
         var buildResult = new ArgumentsBuilder(args)
             .AddCustom(IsContainsMDFile, "'{0}' не является md-файлом")
-            .AddOptionalPair("/l", IsValidLimit, $"'{0}' не является числом, либо не входит в допустимый диапазон: [{MD_HEAD_MIN_LIMIT};{MD_HEAD_MAX_LIMIT}]")
+            .AddOptionalPair("/l", IsValidLimit, $"'{{0}}' не является числом, либо не входит в допустимый диапазон: [{MD_HEAD_MIN_LIMIT};{MD_HEAD_MAX_LIMIT}]")
             .AddOptional("/a")
             .Build();
 
         if (!buildResult.IsValid)
         {
             if (buildResult.Error.Type == FailureArgumentsType.Zero)
-                return HandleArgumentsResult.CreateFailure(HELP);
+                return ArgumentsResult.CreateFailure(HELP);
 
-            return HandleArgumentsResult.CreateFailure(buildResult.Error.Message);
+            return ArgumentsResult.CreateFailure(buildResult.Error.Message);
         }
 
         string pathFile = buildResult.Value[0];
@@ -37,7 +37,7 @@
         if (buildResult.Value.ContainsPair("/l", out string? number))
             limit = int.Parse(number!);
 
-        return HandleArgumentsResult.CreateSuccess(new SuccessHandleArguments(pathFile, limit, isContainsAnchor));
+        return ArgumentsResult.CreateSuccess(new ArgumentsInfo(pathFile, limit, isContainsAnchor));
 
         // Делегат, который проверяет существование указанного md-файла
         static bool IsContainsMDFile(string input)

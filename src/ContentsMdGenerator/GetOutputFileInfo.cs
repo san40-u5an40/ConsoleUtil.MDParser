@@ -2,15 +2,15 @@
 {
     // Просто создаёт объект FileInfo по указанному пути
     // Добавляя префикс "contents_"
-    private static FileInfo GetOutputFileInfo(string sourcePath)
+    private static WriterResult GetOutputFileInfo(ContentInfo contentInfo)
     {
-        var sourceFile = new FileInfo(sourcePath);
+        var sourceFile = new FileInfo(contentInfo.ArgumentsInfo.Path);
 
         string directory = sourceFile.DirectoryName!;
         string name = sourceFile.Name;
 
         string outputPath = Path.Combine(directory, "contents_" + name);
 
-        return new FileInfo(outputPath);
+        return WriterResult.CreateSuccess(new WriterInfo(contentInfo.Content, new FileInfo(outputPath)));
     }
 }
