@@ -9,8 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="san40_u5an40.Arguments" Version="1.1.0" />
-    <PackageReference Include="san40_u5an40.ExtraLib" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.2" />
+    <PackageReference Include="CliFx" Version="2.3.6" />
+    <PackageReference Include="san40_u5an40.ExtraLib" Version="3.0.0" />
   </ItemGroup>
 
 </Project>

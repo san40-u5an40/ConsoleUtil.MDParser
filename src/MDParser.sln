@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.2.11408.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MdParser.App", "MdParser.App\MdParser.App.csproj", "{6771082A-F9BE-4EB8-CD1E-F294EA6BC1C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MdParser.Tests", "MdParser.Tests\MdParser.Tests.csproj", "{0E9F61EC-20C5-7DAB-C04B-98626A2EE813}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6771082A-F9BE-4EB8-CD1E-F294EA6BC1C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6771082A-F9BE-4EB8-CD1E-F294EA6BC1C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6771082A-F9BE-4EB8-CD1E-F294EA6BC1C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6771082A-F9BE-4EB8-CD1E-F294EA6BC1C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E9F61EC-20C5-7DAB-C04B-98626A2EE813}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E9F61EC-20C5-7DAB-C04B-98626A2EE813}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E9F61EC-20C5-7DAB-C04B-98626A2EE813}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E9F61EC-20C5-7DAB-C04B-98626A2EE813}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BB09101B-5A63-4089-9CE3-00CE3FA9A62E}
+	EndGlobalSection
+EndGlobal
