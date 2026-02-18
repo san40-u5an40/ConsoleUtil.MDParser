@@ -15,7 +15,7 @@ public class ContentParser : IParser<ContentOptions>
         static MatchCollection ParseContentCollection(ContentOptions options) =>
             Regex.Matches(options.Text,
                           $"^(?<{REGEX_LEVEL}>#{{1,{options.Limit}}})\\s(?<{REGEX_CONTENT}>.*?)\\r?\\n?$",
-                          RegexOptions.Compiled | RegexOptions.Multiline);
+                          RegexOptions.Multiline);
 
         static StringBuilder FormatIntoStringBuilder(MatchCollection matches, bool isContainsAnchor)
         {

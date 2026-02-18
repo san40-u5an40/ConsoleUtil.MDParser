@@ -33,9 +33,17 @@ public class IOHelpers
     // Получение из файла текста
     public static ResultWithDoubleString GetAllTextFromFile(FileInfo sourceFile)
     {
-        string text = sourceFile
-            .OpenText()
-            .ReadToEnd();
+        string text;
+        try
+        {
+            text = sourceFile
+                .OpenText()
+                .ReadToEnd();
+        }
+        catch (Exception ex)
+        {
+            return ResultWithDoubleString.CreateFailure($"При открытии файла \"{sourceFile.Name}\" возникла ошибка:\n" + ex.Message);
+        }
 
         if (string.IsNullOrEmpty(text))
             return ResultWithDoubleString.CreateFailure("В указанном файле отсутствует текст!");
