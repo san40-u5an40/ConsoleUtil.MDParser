@@ -20,12 +20,8 @@ public abstract class CommandBase<TOptions>(IParser<TOptions> _parser) : IComman
     // Парсится текст
     // 
     // Если на каком-то из этапов возникнет ошибка
-    // Будет выведено соответствующее уведомление и программа завершит свою работу
-    // 
-    // Затем к файлу добавляется префикс, тем самым получается выходной файл для записи спарсенного текста
-    // Если такой файл существует, у пользователя спрашивается необходимость его перезаписи
-    // Если он выбрал перезаписать данные, то данные соответственно перезаписываются
-    // В конце, если всё хорошо, будет выведено уведомление об успешном создании файла
+    // Будет выведено соответствующее уведомление
+    // Иначе будет выведен спарсенный текст
     public async ValueTask ExecuteAsync(IConsole console)
     {
         var parseProcessor = new MarkdownParseProcessor<TOptions>(_parser);
@@ -39,18 +35,8 @@ public abstract class CommandBase<TOptions>(IParser<TOptions> _parser) : IComman
             .Execute();
 
         if (!parseTextFromFileResult.IsValid)
-            await console.Output.WriteLineAndExitAsync(parseTextFromFileResult.Error, 1);
-
-        var outputFile = IOHelpers.AddPrefixFromFile(sourceFile.Value, _parser.Prefix);
-        if (outputFile.Exists && !IOHelpers.AskOverwrite(console, outputFile.Name))
-            await console.Output.WriteLineAndExitAsync("Операция отменена пользователем", 1);
-
-        using (var outputStream = outputFile.CreateText())
-        {
-            await outputStream.WriteAsync(parseTextFromFileResult.Value);
-            await outputStream.FlushAsync();
-        }
-
-        await console.Output.WriteLineAndExitAsync($"Файл \"{outputFile.Name}\" успешно создан", 0);
+            await console.Output.WriteAsync(parseTextFromFileResult.Error);
+        else
+            await console.Output.WriteAsync(parseTextFromFileResult.Value);
     }
 }

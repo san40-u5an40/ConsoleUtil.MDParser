@@ -50,22 +50,4 @@ public class IOHelpers
         else
             return ResultWithDoubleString.CreateSuccess(text);
     }
-
-    // Добавление к файлу указанного префикса
-    public static FileInfo AddPrefixFromFile(FileInfo sourceFile, string prefix)
-    {
-        string directory = sourceFile.DirectoryName!;
-        string name = sourceFile.Name;
-        string finalPath = Path.Combine(directory, prefix + '_' + name);
-
-        return new FileInfo(finalPath);
-    }
-
-    // Вопрос пользователю о необходимости перезаписать файл
-    public static bool AskOverwrite(IConsole console, string filePath)
-    {
-        console.Output.Write($"Файл \"{filePath}\" уже существует. Вы хотите перезаписать его? (\"Y\" - для подтверждения):_\b");
-        string? answer = console.Input.ReadLine();
-        return answer == "Y" || answer == "y";
-    }
 }
