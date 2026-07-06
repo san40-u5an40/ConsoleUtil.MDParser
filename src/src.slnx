@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="MdParser.App/MdParser.App.csproj" />
+  <Project Path="MdParser.Tests/MdParser.Tests.csproj" />
+</Solution>
