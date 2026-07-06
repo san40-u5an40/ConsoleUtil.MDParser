@@ -27,6 +27,9 @@ public class LinksParsingTests
         };
 
         foreach (var data in dataCollection)
-            yield return new TestCaseData(new LinksOptions(data.Text, data.IsReferenceContains, data.MaskForIntern), data.Expected);
+        {
+            string expected = OperatingSystem.IsLinux() ? data.Expected.ReplaceLineEndings("\n"): data.Expected;
+            yield return new TestCaseData(new LinksOptions(data.Text, data.IsReferenceContains, data.MaskForIntern), expected);
+        }
     }
 }

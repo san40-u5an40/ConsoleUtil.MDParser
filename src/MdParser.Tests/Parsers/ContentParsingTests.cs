@@ -27,6 +27,9 @@ public static class ContentParsingTests
         };
 
         foreach (var data in dataCollection)
-            yield return new TestCaseData(new ContentOptions(data.Text, data.Limit, data.IsAnchorContains), data.Expected);
+        {
+            string expected = OperatingSystem.IsLinux() ? data.Expected.ReplaceLineEndings("\n"): data.Expected;
+            yield return new TestCaseData(new ContentOptions(data.Text, data.Limit, data.IsAnchorContains), expected);
+        }
     }
 }
