@@ -27,16 +27,13 @@ public abstract class CommandBase<TOptions>(IParser<TOptions> _parser) : IComman
         var parseProcessor = new MarkdownParseProcessor<TOptions>(_parser);
 
         var parseTextFromFileResult = new Chain<string, string, string>(File)
-            .AddMethod<string, FileInfo>(IOHelpers.ConvertPathToFile, out Readyable<FileInfo> sourceFile)
+            .AddMethod<string, FileInfo>(IOHelpers.ConvertPathToFile)
             .AddMethod<FileInfo, FileInfo>(IOHelpers.ValidationExtension)
             .AddMethod<FileInfo, string>(IOHelpers.GetAllTextFromFile)
             .AddMethod<string, TOptions>(CreateOptionsFromProperties)
             .AddMethod<TOptions, string>(parseProcessor.Parse)
             .Execute();
 
-        if (!parseTextFromFileResult.IsValid)
-            await console.Output.WriteAsync(parseTextFromFileResult.Error);
-        else
-            await console.Output.WriteAsync(parseTextFromFileResult.Value);
+        await console.Output.WriteAsync(parseTextFromFileResult.IsValid ? parseTextFromFileResult.Value : parseTextFromFileResult.Error);
     }
 }
